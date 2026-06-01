@@ -6,7 +6,7 @@ let handler = async (m, { conn, prefix, command }) => {
     let q = m.quoted ? m.quoted : m;
     let mime = (q.msg || q).mimetype || '';
 
-    if (!mime) return m.reply(`📸 Responde a una imagen con el comando *${prefix}${command}* para mejorarla.`);
+    if (!mime) return m.reply(`📸 Responde a una imagen con el comando *.${command}* para mejorarla.`);
     if (!mime.startsWith('image')) return m.reply(`⚠️ Solo se admiten imágenes.`);
 
     await conn.sendMessage(m.chat, {

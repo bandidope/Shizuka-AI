@@ -65,13 +65,13 @@ let handler = async (m, { conn }) => {
     let menuTexto = ''
 
     menuTexto += `╭─ׅ─ׅ┈ ─๋︩︪─☪︎︎︎̸⃘̸࣭ٜ࣪࣪࣪۬◌⃘۪֟፝֯۫۫︎⃪𐇽۫۬❖⃘࣭ٜ࣪࣪࣪۬☪︎︎︎︎̸─ׅ─ׅ┈ ─๋︩︪─╮\n`
-    menuTexto += `╭╼⬪࣪ꥈ𑁍⃪࣭۪ٜ 𝐌𝐄𝐍𝐔 ໑⃪࣭۪ٜ݊݊݊݊𑁍ꥈ࣪⬪\n`
+    menuTexto += `╭╼⬪࣪ꥈ𑁍⃪࣭۪ٜ MENU ໑⃪࣭۪ٜ݊݊݊݊𑁍ꥈ࣪⬪\n`
     menuTexto += `┃֪࣪  ╰─ׅ─ׅ┈ ─๋︩︪─☪︎︎︎̸⃘̸࣭ٜ࣪࣪࣪۬◌⃘۪֟፝֯۫۫︎⃪𐇽۫۬❖⃘࣭ٜ࣪࣪࣪۬☪︎︎︎︎̸─ׅ─ׅ┈ ─๋︩︪─╯\n`
 
-    menuTexto += `├ׁ̟̇❍✎ 𝐔𝐬𝐮𝐚𝐫𝐢𝐨 » ${m.pushName || 'Usuario'}\n`
-    menuTexto += `├ׁ̟̇❍✎ 𝐅𝐞𝐜𝐡𝐚 » ${fecha}\n`
-    menuTexto += `├ׁ̟̇❍✎ 𝐇𝐨𝐫𝐚 » ${hora}\n`
-    menuTexto += `├ׁ̟̇❍✎ 𝐂𝐨𝐦𝐚𝐧𝐝𝐨𝐬 » ${pluginsCount}\n`
+    menuTexto += `├ׁ̟̇❍✎ Usuario » ${m.pushName || 'Usuario'}\n`
+    menuTexto += `├ׁ̟̇❍✎ Fecha » ${fecha}\n`
+    menuTexto += `├ׁ̟̇❍✎ Hora » ${hora}\n`
+    menuTexto += `├ׁ̟̇❍✎ Comandos » ${pluginsCount}\n`
 
     menuTexto += `╰─ׅ─ׅ┈ ─๋︩︪─❖─๋︩︪─┈─ׅ─ׅ╯\n\n`
 

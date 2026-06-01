@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const marriagesFile = path.resolve('storage/databases/marry.json');
+const marriagesFile = path.resolve('storage/lib/marry.json');
 let proposals = {}; 
 let marriages = loadMarriages();
 const confirmation = {};

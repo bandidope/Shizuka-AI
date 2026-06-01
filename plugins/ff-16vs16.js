@@ -40,9 +40,9 @@ if (!args[0]) throw `
 🐾𑁤  
 ` 
 }
-handler.help = ['16vs16']
+handler.help = ['16vs16'];
 handler.tags = ['free']
-handler.command = /^(16vs16)$/i
-handler.group = false
-handler.admin = false
+handler.command = ['16vs16'];
+handler.group = true
+handler.admin = true
 export default handler

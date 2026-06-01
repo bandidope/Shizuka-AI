@@ -4,10 +4,10 @@ const BANNER_URL = `${banner2}`
 
 const CATEGORY_META = {
   main: '⊹ Main ⊹',
+  info: '⊹ Información ⊹',
   free: '⊹ Free Fire ⊹',
   fun: '⊹ Juegos ⊹',
   rg: '⊹ Registro ⊹',
-  info: '⊹ Información ⊹',
   ia: '⊹ Inteligencia AI ⊹',
   buscadores: '⊹ Buscadores ⊹',
   descargas: '⊹ Descargas ⊹',

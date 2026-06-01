@@ -113,12 +113,12 @@ ${iconos.map(icono => `${icono}˚ `).join('\n')}
 
 ${iconos2.map(icono => `${icono}˚ `).join('\n')}
 
-> © Moon Force - Adapted `.trim();
+> © Powered Team Nightwish🇦🇱`.trim();
 
     conn.sendMessage(m.chat, { text: message }, { quoted: m });
 };
 
-handler.help = ['inmixto4', 'inmixto6', 'inmasc4', 'inmasc6', 'infem4', 'infem6' 'v4fem', 'v4masc', 'v4mixto', 'v6fem', 'v6masc', 'v6mixto'];
+handler.help = ['v4fem', 'v4masc', 'v4mixto', 'v6fem', 'v6masc', 'v6mixto' 'infem4', 'inmasc4', 'inmixto4', 'infem6', 'inmasc6', 'inmixto6'];
 handler.tags = ['free'];
 handler.command = /^(v4fem|vsfem4|v4masc|vsmasc4|v4mixto|vsmixto4|v6fem|vsfem6|v6masc|vsmasc6|v6mixto|vsmixto6)$/i;
 

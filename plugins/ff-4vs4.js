@@ -4,7 +4,7 @@ const handler = async (m, { text, conn, args, usedPrefix, command }) => {
         conn.reply(m.chat, `*🧡 Proporciona una hora seguido el país y una modalidad.*
 *Usa AR para Argentina y PE para Perú.*
 
-*💡 Ejemplo:* .${command} 20 pe Apost`, m);
+*💡 Ejemplo:* .${command} 20 pe Vv2`, m);
         return;
     }
 
@@ -118,7 +118,7 @@ ${iconos2.map(icono => `${icono}˚ `).join('\n')}
     conn.sendMessage(m.chat, { text: message }, { quoted: m });
 };
 
-handler.help = ['v4fem', 'v4masc', 'v4mixto', 'v6fem', 'v6masc', 'v6mixto' 'infem4', 'inmasc4', 'inmixto4', 'infem6', 'inmasc6', 'inmixto6'];
+handler.help = ['inmixto4', 'inmixto6', 'inmasc4', 'inmasc6', 'infem4', 'infem6'];
 handler.tags = ['free'];
 handler.command = /^(v4fem|vsfem4|v4masc|vsmasc4|v4mixto|vsmixto4|v6fem|vsfem6|v6masc|vsmasc6|v6mixto|vsmixto6)$/i;
 

@@ -73,7 +73,7 @@ let handler = async (m, { conn }) => {
     menuTexto += `├ׁ̟̇❍ ✎ Hora » ${hora}\n`
     menuTexto += `├ׁ̟̇❍ ✎ Comandos » ${pluginsCount}\n`
 
-    menuTexto += `\n\n`
+    menuTexto += `\n`
 
     for (const tag of Object.keys(CATEGORY_META)) {
       const set = byTag[tag]
@@ -88,7 +88,7 @@ let handler = async (m, { conn }) => {
 
       menuTexto += cmds.map(c => `├ׁ̟̇❍ ✎ .${c}`).join('\n') + '\n'
 
-      menuTexto += `\n\n`
+      menuTexto += `\n`
     }
 
     await conn.sendMessage(m.chat, {

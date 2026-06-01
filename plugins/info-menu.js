@@ -28,7 +28,7 @@ let handler = async (m, { conn }) => {
   try {
 
     await conn.sendMessage(m.chat, {
-      react: { text: '💔', key: m.key }
+      react: { text: '🇦🇱', key: m.key }
     })
 
     const pluginsActivos = Object.values(global.plugins || {}).filter(p => !p?.disabled)

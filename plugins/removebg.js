@@ -1,30 +1,70 @@
-import uploadImage from '../lib/uploadImage.js'
-import { sticker } from '../lib/sticker.js'
+import fs from "fs"
+import path from "path"
+import fetch from "node-fetch"
+import Jimp from "jimp"
+import FormData from "form-data"
+import { fileURLToPath } from "url"
 
-let handler = async (m, { conn, text, args }) => {
-let stiker = false
-let json
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-let q = m.quoted ? m.quoted : m
-let mime = (q.msg || q).mimetype || q.mediaType || ''
-if (/image/g.test(mime) && !/webp/g.test(mime)) {
-let buffer = await q.download()
-let media = await (uploadImage)(buffer)
-json = await (await fetch(`https://aemt.me/removebg?url=${media}`)).json()
-stiker = await sticker(false, json.url.result, global.packname, global.author)
-} else if (text) {
-json = await (await fetch(`https://aemt.me/removebg?url=${text.trim()}`)).json()
-} else return m.reply(`*Responde a una imagen o ingresa una url que sea \`(jpg, jpeg o png)\` para quitar el fondo*`)
+const handler = async (m, { conn }) => {
+  try {
+    const q = m.quoted || m
+    const mime = (q.msg || q).mimetype || q.mediaType || ""
 
-await mensajesEditados(conn, m)
-//await conn.sendMessage(m.chat, { text: waitttttt, edit: key })
-await conn.sendMessage(m.chat, { image: { url: json.url.result }, caption: null }, { quoted: m })
-await conn.sendFile(m.chat, stiker ? stiker : await sticker(false, json.url.result, global.packname, global.author), 'sticker.webp', '', null, true, { contextInfo: { 'forwardingScore': 200, 'isForwarded': false, externalAdReply:{ showAdAttribution: false, title: packname, body: '• STICKER •', mediaType: 2, sourceUrl: redesMenu.getRandom(), thumbnail: gataImg.getRandom()}}})
+    if (!/^image\/(jpe?g|png)$/.test(mime)) {
+      return m.reply(`*${xtools} Por favor, responde a una imagen para eliminar el fondo.*`)
+    }
+
+    await m.react('👨🏻‍🔧')
+
+    const buffer = await q.download()
+    const image = await Jimp.read(buffer)
+    image.resize(800, Jimp.AUTO)
+
+    const tmp = path.join(__dirname, `tmp_${Date.now()}.jpg`)
+    await image.writeAsync(tmp)
+
+    const url = await uploadToUguu(tmp)
+    if (!url) throw new Error("No se pudo subir la imagen.")
+
+    const img = await removeBg(url)
+    await conn.sendFile(m.chat, img, "creditosawillzek.jpg", "✅ Fondo eliminado", m)
+
+  } catch (err) {
+    conn.reply(m.chat, `⚠️ Error: ${err.message}`, m)
+  }
 }
-handler.command = /^(s?removebg)$/i
+
+handler.help = ['removebg']
+handler.tags = ['tools']
+handler.command = ['removebg', 'delfondo']
+
 export default handler
 
-const isUrl = (text) => {
-const urlRegex = /^(https?):\/\/[^\s/$.?#]+\.(jpe?g|png)$/i
-return urlRegex.test(text)
+async function uploadToUguu(filePath) {
+  const form = new FormData()
+  form.append("files[]", fs.createReadStream(filePath))
+
+  try {
+    const res = await fetch("https://uguu.se/upload.php", {
+      method: "POST",
+      headers: form.getHeaders(),
+      body: form
+    })
+
+    const json = await res.json()
+    await fs.promises.unlink(filePath)
+    return json.files?.[0]?.url
+  } catch {
+    await fs.promises.unlink(filePath)
+    return null
+  }
+}
+
+async function removeBg(imageUrl) {
+  const res = await fetch(`https://api.siputzx.my.id/api/iloveimg/removebg?image=${encodeURIComponent(imageUrl)}&scale=2`)
+  if (!res.ok) throw new Error("No se pudo eliminar el fondo.")
+  return await res.buffer()
 }

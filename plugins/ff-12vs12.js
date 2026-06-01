@@ -34,9 +34,9 @@ if (!args[0]) throw `
 🐾𑁤  
 ` 
 }
-handler.help = ['12vs12']
+handler.help = ['12vs12'];
 handler.tags = ['free']
-handler.command = /^(12vs12)$/i
-handler.group = false
-handler.admin = false
+handler.command = ['12vs12'];
+handler.group = true
+handler.admin = true
 export default handler

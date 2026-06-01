@@ -4,7 +4,7 @@ const handler = async (m, { text, conn, args, usedPrefix, command }) => {
         conn.reply(m.chat, `*🧡 Proporciona una hora seguido el país y una modalidad.*
 *Usa AR para Argentina y PE para Perú.*
 
-*💡 Ejemplo:* .${command} 20 pe Vv2`, m);
+*💡 Ejemplo:* .${command} 20 pe Apost`, m);
         return;
     }
 

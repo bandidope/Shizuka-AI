@@ -40,7 +40,7 @@ function formatPlayerData(player) {
 }
 
 handler.help = ['ffstalk <id>'];
-handler.tags = ['tools', 'freefire'];
+handler.tags = ['free']
 handler.command = ['ffstalk', 'freefirestalk', 'stalkff'];
 
 export default handler;

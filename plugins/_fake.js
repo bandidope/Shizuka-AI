@@ -1,11 +1,11 @@
 export async function before(m, { conn }) {
 
-var canal = 'https://whatsapp.com/channel/0029VbAVMtj2f3EFmXmrzt0v'
-var canal2 = 'https://whatsapp.com/channel/0029VbAVMtj2f3EFmXmrzt0v'
-var canal3 = 'https://whatsapp.com/channel/0029VbAVMtj2f3EFmXmrzt0v'
+var canal = 'https://whatsapp.com/channel/0029Vb5oUp43LdQUVViHwc0m'
+var canal2 = 'https://whatsapp.com/channel/0029Vb5oUp43LdQUVViHwc0m'
+var canal3 = 'https://whatsapp.com/channel/0029Vb5oUp43LdQUVViHwc0m'
 var api = 'xvideos.com'
-var git = 'https://github.com/Kone457'
-var md = 'https://github.com/Kone457Shizuka-AI'
+var git = 'https://github.com/Privado'
+var md = 'https://github.com/Privado'
 
 globalThis.redes = [canal, canal2, canal3, api, git, md].getRandom()
 

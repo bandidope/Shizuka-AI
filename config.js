@@ -32,7 +32,7 @@ global.api = {
 }
 
 global.my = {
-  ch: '120363400241973967@newsletter',
+  ch: '120363419947391620@newsletter',
   name: '꒰ ✨ 𝐓𝐞𝐚𝐦 𝐍𝐢𝐠𝐡𝐭𝐰𝐢𝐬𝐡  ꒱'
 }
 

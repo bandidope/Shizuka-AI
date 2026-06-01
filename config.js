@@ -5,17 +5,16 @@ import { fileURLToPath } from "url"
 global.botNumber = ""
 
 global.owner = [
-  ["595987301197", "Carlos 👑", true],
-  ["17054102764", "Canada", true],
-  ["5363870693", "XxX", true]
+  ["51936994155", "Whois 👑", true],
+  ["51904937048", "Bot", true]
 ]
 
-global.botname = '𝚂𝚑𝚒𝚣𝚞𝚔𝚊'
-global.namebot = '𝚂𝚑𝚒𝚣𝚞𝚔𝚊-𝙰𝙸'
-global.packname = 'ѕнιzυкα-αι'
-global.wm = '𝓢𝓱𝓲𝔃𝓾𝓴𝓪-𝓐𝓘'
-global.author = '𝙲𝚊𝚛𝚕𝚘𝚜'
-global.dev = '© 𝙿𝚘𝚠𝚎𝚛𝚎𝚍 𝚋𝚢 𝙲𝚊𝚛𝚕𝚘𝚜.'
+global.botname = '𝐒𝐭𝐨𝐫𝐦 𝐁𝐨𝐭 🇦🇱'
+global.namebot = '𝐒𝐭𝐨𝐫𝐦 𝐁𝐨𝐭 🇦🇱'
+global.packname = '𝐓𝐞𝐚𝐦 𝐍𝐢𝐠𝐡𝐭𝐰𝐢𝐬𝐡 🇦🇱'
+global.wm = '𝐒𝐭𝐨𝐫𝐦 𝐁𝐨𝐭 🇦🇱'
+global.author = '𝐖𝐡𝐨𝐢𝐬𝐬 𝐘𝐚𝐥𝐥𝐢𝐜𝐨 🇦🇱'
+global.dev = '© 𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐓𝐞𝐚𝐦 𝐍𝐢𝐠𝐡𝐭𝐰𝐢𝐬𝐡 🇦🇱.'
 
 global.banner = 'https://raw.githubusercontent.com/Kone457/Nexus/refs/heads/main/Anime/99eec236ee.jpg'
 global.banner2 = 'https://raw.githubusercontent.com/Kone457/Nexus/main/Datos/75fbe587ad51.jpg'
@@ -34,7 +33,7 @@ global.api = {
 
 global.my = {
   ch: '120363400241973967@newsletter',
-  name: '꒰ ✨ 𝚂𝚑𝚒𝚣𝚞𝚔𝚊-𝙰𝙸 ꒱'
+  name: '꒰ ✨ 𝐓𝐞𝐚𝐦 𝐍𝐢𝐠𝐡𝐭𝐰𝐢𝐬𝐡  ꒱'
 }
 
 const file = fileURLToPath(import.meta.url)

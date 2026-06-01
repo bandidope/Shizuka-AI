@@ -1,185 +1,71 @@
-import fetch from 'node-fetch';
-import sharp from 'sharp';
+import axios from 'axios';
+import FormData from 'form-data';
 
-export class Upscaler {
-  endpoint = 'https://luca115-best-upscaling-models.hf.space';
-  cdn = 'https://cdn.adoolab.xyz/api/upload';
-  models = [
-    '4xRealHATGANSharper',
-    '4xRealHATGAN',
-    '4xNomos8kSCHAT-L',
-    '4xNomosWebPhoto_RealPLKSR'
-  ];
-  ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36';
+let handler = async (m, { conn, prefix, command }) => {
+  try {
+    let q = m.quoted ? m.quoted : m;
+    let mime = (q.msg || q).mimetype || '';
 
-  async _fetch(url, opts = {}) {
-    const res = await fetch(url, {
-      ...opts,
-      headers: { 'User-Agent': this.ua, Referer: 'https://upsampler.com/', ...opts.headers },
-    });
-    if (!res.ok) throw new Error(`${url} responded ${res.status}`);
-    return res;
-  }
+    if (!mime) return m.reply(`📸 Responde a una imagen con el comando *${prefix}${command}* para mejorarla.`);
+    if (!mime.startsWith('image')) return m.reply(`⚠️ Solo se admiten imágenes.`);
 
-  async _upload(imageUrl) {
-    const img = await this._fetch(imageUrl);
-    const fileBuffer = Buffer.from(await img.arrayBuffer());
-    const fileName = imageUrl.split('/').pop() || 'image.jpg';
-    const boundary = '----FormBoundary' + Math.random().toString(36).slice(2);
-    const header = Buffer.from(
-      `--${boundary}\r\nContent-Disposition: form-data; name="files"; filename="${fileName}"\r\nContent-Type: application/octet-stream\r\n\r\n`
-    );
-    const footer = Buffer.from(`\r\n--${boundary}--\r\n`);
-
-    const res = await this._fetch(`${this.endpoint}/gradio_api/upload`, {
-      method: 'POST',
-      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}` },
-      body: Buffer.concat([header, fileBuffer, footer]),
-    });
-    return (await res.json())[0];
-  }
-
-  async _process(remotePath, model, sessionHash) {
-    const res = await this._fetch(`${this.endpoint}/gradio_api/queue/join`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        data: [{ path: remotePath, meta: { _type: 'gradio.FileData' } }, model],
-        fn_index: 1,
-        session_hash: sessionHash,
-      }),
-    });
-    return (await res.json()).event_id;
-  }
-
-  async _waitResult(sessionHash) {
-    const res = await this._fetch(`${this.endpoint}/gradio_api/queue/data?session_hash=${sessionHash}`, {
-      headers: { Accept: 'text/event-stream' },
+    await conn.sendMessage(m.chat, {
+      react: { text: "🔄", key: m.key }
     });
 
-    let buffer = '';
-    const decoder = new TextDecoder();
-    const reader = res.body.getReader();
+    const media = await q.download();
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) throw new Error('SSE stream closed without result');
-      buffer += decoder.decode(value, { stream: true });
+    const enhancedBuffer = await ihancer(media, { method: 1, size: 'high' });
 
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
+    const caption = `✨ *Imagen mejorada con éxito*\n⚙️ Método: iHancer AI\n🔝 Calidad: High\n👾 By: 𝗠𝗰𝗤𝘂𝗲𝗲𝗻 𝗕𝗼𝘁 `;
 
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        try {
-          const msg = JSON.parse(line.slice(6));
-          if (msg.msg === 'process_completed') {
-            if (!msg.success) throw new Error('Processing failed');
-            const outputs = msg.output.data[0];
-            return {
-              url: outputs[outputs.length - 1].url,
-              duration: msg.output.duration,
-            };
-          }
-        } catch (e) {
-          if (e.message === 'Processing failed') throw e;
-        }
-      }
-    }
-  }
+    await conn.sendMessage(m.chat, {
+      image: enhancedBuffer,
+      caption
+    }, { quoted: m });
 
-  async _convertToJpg(webpBuffer) {
-    return await sharp(webpBuffer).jpeg({ quality: 90 }).toBuffer();
-  }
-
-  async _uploadCdn(jpgBuffer, filename) {
-    const base64 = jpgBuffer.toString('base64');
-    const res = await fetch(this.cdn, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        filename,
-        data: base64,
-        mimetype: 'image/jpeg',
-        expiration: '24h',
-      }),
+    await conn.sendMessage(m.chat, {
+      react: { text: "✅", key: m.key }
     });
-    if (!res.ok) throw new Error(`CDN upload failed: ${res.status}`);
-    return await res.json();
+
+  } catch (e) {
+    console.error(e);
+    await conn.sendMessage(m.chat, {
+      react: { text: "❌", key: m.key }
+    });
+    await m.reply("⚠️ Ocurrió un error al procesar la imagen con iHancer.");
   }
-
-  async upscale(imageUrl, model) {
-    try {
-      if (!imageUrl) throw new Error('imageUrl is required');
-      model = model || this.models[0];
-      if (!this.models.includes(model)) throw new Error(`Invalid model. Valid: ${this.models.join(', ')}`);
-
-      const sessionHash = Math.random().toString(36).slice(2, 14);
-      const remotePath = await this._upload(imageUrl);
-      await this._process(remotePath, model, sessionHash);
-      const result = await this._waitResult(sessionHash);
-
-      const dlRes = await this._fetch(result.url);
-      const webpBuffer = Buffer.from(await dlRes.arrayBuffer());
-      const jpgBuffer = await this._convertToJpg(webpBuffer);
-
-      const filename = `upscaled_${Date.now()}.jpg`;
-      const cdn = await this._uploadCdn(jpgBuffer, filename);
-
-      return {
-        status: true,
-        data: {
-          source: imageUrl,
-          model,
-          url: cdn.url,
-          duration: +result.duration.toFixed(2),
-        },
-      };
-    } catch (e) {
-      return {
-        status: false,
-        msg: e instanceof Error ? e.message : String(e),
-      };
-    }
-  }
-}
-
-let handler = async (m, { conn, args }) => {
-  const quoted = m.quoted ? m.quoted : null;
-  const mime = quoted?.mimetype || '';
-  if (!mime || !mime.startsWith('image/')) {
-    return conn.reply(m.chat, '⚠️ Responde a una *imagen* con el comando `.hd`.', m);
-  }
-
-  const img = await quoted.download();
-  if (!img) return conn.reply(m.chat, '❌ No se pudo obtener la imagen.', m);
-
-  const uploadRes = await fetch('https://telegra.ph/upload', {
-    method: 'POST',
-    body: img,
-    headers: { 'Content-Type': 'image/jpeg' }
-  });
-  const json = await uploadRes.json();
-  const imageUrl = 'https://telegra.ph' + json[0].src;
-
-  const model = args[0];
-  const upscaler = new Upscaler();
-  const result = await upscaler.upscale(imageUrl, model);
-
-  if (!result.status) {
-    return conn.reply(m.chat, `❌ Error: ${result.msg}`, m);
-  }
-
-  const txt = `*乂 H D - U P S C A L E R 乂*\n\n` +
-              `*» Modelo* : ${result.data.model}\n` +
-              `*» Upscaled* : ${result.data.url}\n` +
-              `*» Tiempo* : ${result.data.duration}s\n`;
-
-  await conn.sendFile(m.chat, result.data.url, 'upscaled.jpg', txt, m);
 };
+
+async function ihancer(buffer, { method = 1, size = 'low' } = {}) {
+    const _size = ['low', 'medium', 'high']
+
+    if (!buffer || !Buffer.isBuffer(buffer)) throw new Error('Se requiere una imagen')
+    if (method < 1 || method > 4) throw new Error('Métodos disponibles: 1, 2, 3, 4')
+    if (!_size.includes(size)) throw new Error(`Calidades disponibles: ${_size.join(', ')}`)
+
+    const form = new FormData()
+    form.append('method', method.toString())
+    form.append('is_pro_version', 'false')
+    form.append('is_enhancing_more', 'false')
+    form.append('max_image_size', size)
+    form.append('file', buffer, `keistop_${Date.now()}.jpg`) // Nombre de archivo actualizado
+
+    const { data } = await axios.post('https://ihancer.com/api/enhance', form, {
+        headers: {
+            ...form.getHeaders(),
+            'accept-encoding': 'gzip',
+            'host': 'ihancer.com',
+            'user-agent': 'Dart/3.5 (dart:io)'
+        },
+        responseType: 'arraybuffer'
+    })
+
+    return Buffer.from(data)
+}
 
 handler.help = ['hd'];
 handler.tags = ['tools'];
-handler.command = ['hd','upscale'];
+handler.command = ['hd', 'upscale', 'enhance'];
 
 export default handler;

@@ -22,7 +22,7 @@ if (!args[0]) throw `
 ` 
 }
 handler.help = ['6vs6']
-handler.tags = ['ff']
+handler.tags = ['free']
 handler.command = /^(6vs6)$/i
 handler.group = false
 handler.admin = false

@@ -29,8 +29,6 @@ https://chat.whatsapp.com/Fi6FHZ8VSGnAT7CKJkcd9r?mode=gi_t
 ` 
 }
 handler.help = ['comprar'];
-handler.tags = ['main']
+handler.tags = ['main'];
 handler.command = ['comprar'];
-handler.group = true
-handler.admin = false
 export default handler

@@ -4,13 +4,14 @@ const BANNER_URL = `${banner2}`
 
 const CATEGORY_META = {
   main: '⊹ Main ⊹',
+  ff: '⊹ Free Fire ⊹',
+  fun: '⊹ Diversión ⊹',
   rg: '⊹ Registro ⊹',
   info: '⊹ Información ⊹',
   ia: '⊹ Inteligencia AI ⊹',
   buscadores: '⊹ Buscadores ⊹',
   descargas: '⊹ Descargas ⊹',
   imagen: '⊹ Imágenes ⊹',
-  fun: '⊹ Diversión ⊹',
   game: '⊹ Juegos ⊹',
   anime: '⊹ Anime ⊹',
   grupo: '⊹ Admins ⊹',

@@ -1,29 +1,51 @@
-let handler = async (m, { conn, participants, isAdmin, isOwner, text }) => {
-    if (!m.isGroup) return m.reply('✿ *Este comando solo se puede usar en grupos*');
-    if (!isAdmin && !isOwner) return m.reply('✿ *Solo administradores pueden usar este comando*');
-    
-    let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text ? text.replace(/[^0-9]/g, '') + '@s.whatsapp.net' : false;
-    if (!who) return m.reply('✿ *Etiqueta o responde al mensaje del usuario que deseas silenciar*');
+import fetch from 'node-fetch';
 
-    let chat = global.db.data.chats[m.chat];
-    if (!chat.mutedUsers) chat.mutedUsers = [];
+const handler = async (m, { conn, command, text, isAdmin, participants }) => {
+    const userId = m.mentionedJid && m.mentionedJid[0] 
+                    ? m.mentionedJid[0] 
+                    : m.quoted 
+                        ? m.quoted.sender 
+                        : text;
 
-    const command = m.command.toLowerCase();
-    if (command === 'mute' || command === 'silenciar') {
-        if (chat.mutedUsers.includes(who)) return m.reply('✿ *Este usuario ya está silenciado en este grupo*');
-        chat.mutedUsers.push(who);
-        await m.reply(`✿ *@${who.split('@')[0]} ha sido silenciado.\n> Sus mensajes serán eliminados automáticamente.*`, { mentions: [who] });
-    } else {
-        if (!chat.mutedUsers.includes(who)) return m.reply('✿ *Este usuario no está silenciado en este grupo*');
-        chat.mutedUsers = chat.mutedUsers.filter(u => u !== who);
-        await m.reply(`✿ *@${who.split('@')[0]} ha sido desilenciado.*`, { mentions: [who] });
+    if (!isAdmin) throw '🍬 *Solo un administrador puede ejecutar este comando*';
+    if (!userId) throw '🍬 *Menciona a la persona que deseas mutear o desmutear*';
+
+    const user = global.db.data.users[userId] || {};
+    user.mute = user.mute || false;
+
+    if (command === 'mute') {
+        if (user.mute) throw '🍭 *Este usuario ya ha sido muteado*';
+        user.mute = true;
+        await conn.reply(m.chat, '🍭 *Este usuario ha sido muteado y sus mensajes serán eliminados*', m);
+    }
+
+    if (command === 'unmute') {
+        if (!user.mute) throw '🍭 *Este usuario no está muteado*';
+        user.mute = false;
+        await conn.reply(m.chat, '🍬 *Este usuario ha sido desmuteado*', m);
+    }
+
+    // Guardar el estado en la base de datos
+    global.db.data.users[userId] = user;
+};
+
+// Escuchar y eliminar los mensajes de usuarios muteados en el mismo handler
+handler.before = async (m, { conn }) => {
+    const sender = m.sender;
+    const isMuted = global.db.data.users[sender]?.mute;
+
+    if (isMuted && !m.key.fromMe) {
+        try {
+            await conn.sendMessage(m.chat, { delete: m.key });
+        } catch (e) {
+            console.error('Error al eliminar mensaje:', e);
+        }
     }
 };
 
-handler.help = ['mute @user', 'unmute @user'];
-handler.tags = ['group'];
-handler.command = /^(mute|silenciar|unmute|desilenciar)$/i;
+handler.command = ['mute', 'unmute'];
 handler.admin = true;
-handler.group = true;
+handler.botAdmin = true;
+handler.rowner = true;
 
 export default handler;

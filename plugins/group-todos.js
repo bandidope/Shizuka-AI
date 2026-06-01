@@ -21,7 +21,7 @@ return list[Math.floor(list.length * Math.random())]
   teks += `│\n╰Pᴏᴡᴇʀᴇᴅ Bʏ Tᴇᴀᴍ Nɪɢʜᴛᴡɪsʜ 🌀`;
   conn.sendMessage(m.chat, {text: teks, mentions: participants.map((a) => a.id)} );
 };
-handler.help = ['todos <mesaje>', 'invocar <mesaje>'];
+handler.help = ['todos <mesaje>'];
 handler.tags = ['group'];
 handler.command = /^(tagall|invocar|marcar|todos|invocación|ta)$/i;
 handler.admin = true;

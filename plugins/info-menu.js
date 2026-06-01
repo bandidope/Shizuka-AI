@@ -66,7 +66,7 @@ let handler = async (m, { conn }) => {
 
     menuTexto += `\n`
     menuTexto += `╭╼⬪࣪ MENU ⬪\n`
-    menuTexto += `\n`
+    menuTexto += ``
 
     menuTexto += `├ׁ̟̇❍ ✎ Usuario » ${m.pushName || 'Usuario'}\n`
     menuTexto += `├ׁ̟̇❍ ✎ Fecha » ${fecha}\n`
@@ -84,7 +84,7 @@ let handler = async (m, { conn }) => {
 
       menuTexto += `\n`
       menuTexto += `╭╼⬪࣪ ${CATEGORY_META[tag]} ⬪\n`
-      menuTexto += `\n`
+      menuTexto += ``
 
       menuTexto += cmds.map(c => `├ׁ̟̇❍ ✎ .${c}`).join('\n') + '\n'
 

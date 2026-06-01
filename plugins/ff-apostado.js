@@ -41,7 +41,7 @@ if (!args[0]) throw `
 ` 
 }
 handler.help = ['apostado']
-handler.tags = ['ff']
+handler.tags = ['free']
 handler.command = /^(apostado)$/i
 handler.group = false
 handler.admin = false

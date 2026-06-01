@@ -64,16 +64,16 @@ let handler = async (m, { conn }) => {
 
     let menuTexto = ''
 
-    menuTexto += `╭─ׅ─ׅ┈ ─๋︩︪─☪︎︎︎̸⃘̸࣭ٜ࣪࣪࣪۬◌⃘۪֟፝֯۫۫︎⃪𐇽۫۬❖⃘࣭ٜ࣪࣪࣪۬☪︎︎︎︎̸─ׅ─ׅ┈ ─๋︩︪─╮\n`
-    menuTexto += `╭╼⬪࣪ꥈ𑁍⃪࣭۪ٜ MENU ໑⃪࣭۪ٜ݊݊݊݊𑁍ꥈ࣪⬪\n`
-    menuTexto += `┃֪࣪  ╰─ׅ─ׅ┈ ─๋︩︪─☪︎︎︎̸⃘̸࣭ٜ࣪࣪࣪۬◌⃘۪֟፝֯۫۫︎⃪𐇽۫۬❖⃘࣭ٜ࣪࣪࣪۬☪︎︎︎︎̸─ׅ─ׅ┈ ─๋︩︪─╯\n`
+    menuTexto += `\n`
+    menuTexto += `╭╼⬪࣪ MENU ⬪\n`
+    menuTexto += `\n`
 
-    menuTexto += `├ׁ̟̇❍✎ Usuario » ${m.pushName || 'Usuario'}\n`
-    menuTexto += `├ׁ̟̇❍✎ Fecha » ${fecha}\n`
-    menuTexto += `├ׁ̟̇❍✎ Hora » ${hora}\n`
-    menuTexto += `├ׁ̟̇❍✎ Comandos » ${pluginsCount}\n`
+    menuTexto += `├ׁ̟̇❍ ✎ Usuario » ${m.pushName || 'Usuario'}\n`
+    menuTexto += `├ׁ̟̇❍ ✎ Fecha » ${fecha}\n`
+    menuTexto += `├ׁ̟̇❍ ✎ Hora » ${hora}\n`
+    menuTexto += `├ׁ̟̇❍ ✎ Comandos » ${pluginsCount}\n`
 
-    menuTexto += `╰─ׅ─ׅ┈ ─๋︩︪─❖─๋︩︪─┈─ׅ─ׅ╯\n\n`
+    menuTexto += `\n\n`
 
     for (const tag of Object.keys(CATEGORY_META)) {
       const set = byTag[tag]
@@ -82,13 +82,13 @@ let handler = async (m, { conn }) => {
 
       const cmds = [...set].sort()
 
-      menuTexto += `╭─ׅ─ׅ┈ ─๋︩︪─☪︎︎︎̸⃘̸࣭ٜ࣪࣪࣪۬◌⃘۪֟፝֯۫۫︎⃪𐇽۫۬❖⃘࣭ٜ࣪࣪࣪۬☪︎︎︎︎̸─ׅ─ׅ┈ ─๋︩︪─╮\n`
-      menuTexto += `╭╼⬪࣪ꥈ𑁍⃪࣭۪ٜ ${CATEGORY_META[tag]} ໑⃪࣭۪ٜ݊݊݊݊𑁍ꥈ࣪⬪\n`
-      menuTexto += `┃֪࣪  ╰─ׅ─ׅ┈ ─๋︩︪─☪︎︎︎̸⃘̸࣭ٜ࣪࣪࣪۬◌⃘۪֟፝֯۫۫︎⃪𐇽۫۬❖⃘࣭ٜ࣪࣪࣪۬☪︎︎︎︎̸─ׅ─ׅ┈ ─๋︩︪─╯\n`
+      menuTexto += `\n`
+      menuTexto += `╭╼⬪࣪ ${CATEGORY_META[tag]} ⬪\n`
+      menuTexto += `\n`
 
-      menuTexto += cmds.map(c => `├ׁ̟̇❍✎ .${c}`).join('\n') + '\n'
+      menuTexto += cmds.map(c => `├ׁ̟̇❍ ✎ .${c}`).join('\n') + '\n'
 
-      menuTexto += `╰─ׅ─ׅ┈ ─๋︩︪─❖─๋︩︪─┈─ׅ─ׅ╯\n\n`
+      menuTexto += `\n\n`
     }
 
     await conn.sendMessage(m.chat, {

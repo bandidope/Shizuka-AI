@@ -18,9 +18,9 @@ if (!args[0]) throw `
 🐾𑁤
 ` 
 }
-handler.help = ['4vs4']
+handler.help = ['4vs4'];
 handler.tags = ['free']
-handler.command = /^(4vs4)$/i
-handler.group = false
-handler.admin = false
+handler.command = ['4vs4'];
+handler.group = true
+handler.admin = true
 export default handler

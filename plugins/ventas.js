@@ -1,9 +1,8 @@
-import fg from 'api-dylux' 
-import fetch from 'node-fetch'
-import axios from 'axios'
-let handler = async (m, { conn, args, command, usedPrefix }) => {
-if (!args[0]) throw `
-*Holiss , Quieres Saber Los Precios? O Quieres Revender El Bot ? 🥴*
+const handler = async (m, { conn }) => {
+const taguser = '@' + m.sender.split('@s.whatsapp.net')[0];
+
+  conn.sendMessage(m.chat, {
+text: `*Holiss , Quieres Saber Los Precios? O Quieres Revender El Bot ? 🥴*
 
 Acá Te Dejo Los Precios De McQueen Bot ⚡
 
@@ -25,10 +24,9 @@ Acá Te Dejo Los Precios De McQueen Bot ⚡
 
 *Nota :* Recuerda Al Revender Ganarás El 40% De Lo Que Vendas Ya Sea Mensual , Permanente, Menos El Producto ( Servidor ) 
 
-https://chat.whatsapp.com/Fi6FHZ8VSGnAT7CKJkcd9r?mode=gi_t
-` 
-}
-handler.help = ['comprarbot', 'comprar'];
-handler.tags = ['main'];
-handler.command = /^(comprarbot|comprar)$/i;
-export default handler
+https://chat.whatsapp.com/Fi6FHZ8VSGnAT7CKJkcd9r?mode=gi_t`,
+mentions: [m.sender]
+}, { quoted: fkontak });
+};
+handler.command = ['precios', 'comprar', 'adquirir'];
+export default handler;

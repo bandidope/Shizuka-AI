@@ -20,7 +20,8 @@ await conn.sendMessage(m.chat, {image: Buffer.from(buffer)}, {quoted: m});
 throw `Error: ${error.message}`;
 }
 }
-handler.tags = ['tools'];
-handler.help = ['quitarfondo'];
-handler.command = ['quitarfondo','bg'];
-export default handler;
+handler.help = ['bg']
+handler.tags = ['info']
+handler.command = ['bg'] 
+handler.admin = false
+export default handler

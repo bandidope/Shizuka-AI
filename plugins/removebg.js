@@ -28,8 +28,9 @@ let handler = async (m, {
     };
 };
 
-handler.help = handler.command = ["removebg", "rbg", "removebackground"];
-handler.tags = ["tools"];
-handler.limit = true;
-
+handler.help = ['remove']
+handler.tags = ['info']
+handler.command = ['remove'] 
+handler.admin = false
+export default handler
 export default handler;

@@ -50,7 +50,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 ╰─ׅ─ׅ┈ ─๋︩︪─❖─๋︩︪─┈─ׅ─ׅ╯`
 
     await conn.reply(
-        '595987301197@s.whatsapp.net',
+        '51936994155@s.whatsapp.net',
         m.quoted ? teks + '\n\n💭 RESPUESTA CITADA:\n' + m.quoted.text : teks,
         m,
         { mentions: conn.parseMention(teks) }

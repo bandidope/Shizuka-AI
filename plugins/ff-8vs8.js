@@ -27,9 +27,9 @@ if (!args[0]) throw `
 🐾𑁤  
 ` 
 }
-handler.help = ['8vs8']
+handler.help = ['8vs8'];
 handler.tags = ['free']
-handler.command = /^(8vs8)$/i
-handler.group = false
-handler.admin = false
+handler.command = ['8vs8'];
+handler.group = true
+handler.admin = true
 export default handler

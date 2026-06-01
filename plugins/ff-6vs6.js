@@ -21,9 +21,9 @@ if (!args[0]) throw `
 🐾𑁤
 ` 
 }
-handler.help = ['6vs6']
+handler.help = ['6vs6'];
 handler.tags = ['free']
-handler.command = /^(6vs6)$/i
-handler.group = false
-handler.admin = false
+handler.command = ['6vs6'];
+handler.group = true
+handler.admin = true
 export default handler

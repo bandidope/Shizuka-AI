@@ -28,9 +28,9 @@ Acá Te Dejo Los Precios De McQueen Bot ⚡
 https://chat.whatsapp.com/Fi6FHZ8VSGnAT7CKJkcd9r?mode=gi_t
 ` 
 }
-handler.help = ['comprar']
+handler.help = ['comprar'];
 handler.tags = ['main']
-handler.command = /^(comprar)$/i
-handler.group = false
+handler.command = ['comprar'];
+handler.group = true
 handler.admin = false
 export default handler

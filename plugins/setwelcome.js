@@ -1,43 +1,42 @@
-export default {
-  command: ['setwelcome'],
-  category: 'group',
-  description: 'Establecer un mensaje de bienvenida personalizado.',
-  isAdmin: true,
-  run: async ({ msg, args, usedPrefix, command }) => {
-    const chatId = msg.chat;
-    let chat = global.db.data.chats[chatId];
-    if (!args.length) {
-      return msg.reply(`ꕤ ꨩᰰ𑪐𑂺 ˳ ׄ Set Welcome ࣭𑁯ᰍ   ̊ ܃܃
+import { createHash } from 'crypto';  
+import fetch from 'node-fetch';
 
-*❒ Variables disponibles:*
-𖣣ֶㅤ֯⌗ ✤ ⬭ @user    
-> → Mención del usuario que ingresa
-
-𖣣ֶㅤ֯⌗ ✤ ⬭ @group   
-> → Nombre del grupo
-
-𖣣ֶㅤ֯⌗ ✤ ⬭ @desc    
-> → Descripción del grupo
-
-𖣣ֶㅤ֯⌗ ✤ ⬭ @members 
-> → Número de miembros actuales
-
-𖣣ֶㅤ֯⌗ ✤ ⬭ @time    
-> → Fecha y hora
-
-✿ Si ya tienes un mensaje configurado y quieres borrarlo usa: *${usedPrefix + command} clear*`);
+/**
+ * Este manejador de comandos permite a los administradores del grupo
+ * establecer y borrar un mensaje de bienvenida personalizado.
+ */
+const handler = async (m, { conn, text, command, isAdmin, isOwner }) => {
+    // Si no es un grupo, o el usuario no es admin/dueño, no hagas nada.
+    if (!m.isGroup || (!isAdmin && !isOwner)) {
+        return m.reply('❌ ¡Solo los administradores o el dueño pueden usar estos comandos!');
     }
-    if (args[0] === 'clear') {
-      if (!chat.sWelcome || chat.sWelcome.trim() === '') {
-        return msg.reply('✎ No tienes ningún mensaje de bienvenida definido.');
-      }
-      chat.sWelcome = '';
-      global.db.data.chats[chatId].sWelcome = '';
-      return msg.reply('✐ Mensaje de bienvenida eliminado.');
+
+    // Asegurarse de que el chat tenga una entrada en la base de datos
+    let chat = global.db.data.chats[m.chat] || {};
+    if (!global.db.data.chats[m.chat]) {
+        global.db.data.chats[m.chat] = chat;
     }
-    const texto = args.join(' ');
-    chat.sWelcome = texto;
-    global.db.data.chats[chatId].sWelcome = texto;
-    msg.reply(`ꕥ Has establecido el mensaje de bienvenida correctamente.`);
-  }
+
+    if (command === 'setwelcome') {
+        if (!text) {
+            return m.reply('❌ Por favor, proporciona un mensaje de bienvenida. Puedes usar los siguientes placeholders:\n`@user`, `@group`, `@count`');
+        }
+
+        // Guarda el mensaje personalizado en la base de datos del chat
+        chat.customWelcome = text.trim();
+        m.reply(`✅ El mensaje de bienvenida personalizado ha sido establecido con éxito.`);
+
+    } else if (command === 'delwelcome') {
+        // Borra el mensaje personalizado
+        chat.customWelcome = null;
+        m.reply('✅ El mensaje de bienvenida personalizado ha sido eliminado. Ahora se usará el mensaje predeterminado.');
+    }
 };
+
+handler.help = ['setwelcome <mensaje>', 'delwelcome'];
+handler.tags = ['group', 'config'];
+handler.command = ['setwelcome', 'delwelcome'];
+handler.owner = false;
+handler.admin = true;
+
+export default handler;

@@ -1,34 +1,43 @@
-let handler = async (m, { conn, text, isROwner, isOwner }) => {
-    let fkontak = { 
-        "key": { 
-            "participants":"0@s.whatsapp.net", 
-            "remoteJid": "status@broadcast", 
-            "fromMe": false, 
-            "id": "Halo" 
-        }, 
-        "message": { 
-            "contactMessage": { 
-                "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` 
-            }
-        }, 
-        "participant": "0@s.whatsapp.net" 
-    };
+export default {
+  command: ['setwelcome'],
+  category: 'group',
+  description: 'Establecer un mensaje de bienvenida personalizado.',
+  isAdmin: true,
+  run: async ({ msg, args, usedPrefix, command }) => {
+    const chatId = msg.chat;
+    let chat = global.db.data.chats[chatId];
+    if (!args.length) {
+      return msg.reply(`ꕤ ꨩᰰ𑪐𑂺 ˳ ׄ Set Welcome ࣭𑁯ᰍ   ̊ ܃܃
 
-    if (text) {
-        global.db.data.chats[m.chat].sWelcome = text;
-        // **THIS IS THE KEY FIX:** Save the database after modification
-        await global.db.write(); 
-        conn.reply(m.chat, '_*LA BIENVENIDA DEL GRUPO HA SIDO CONFIGURADA*_', fkontak, m);
-    } else {
-        conn.reply(m.chat, `*_ESCRIBE EL MENSAJE DE BIENVENIDA_*\n*_OPCIONAL PUEDE USAR LO QUE ESTA CON "@" PARA AGREGAR MÁS INFORMACIÓN:_*\n\n*⚡ @user (Mención al usuario(a))*\n*⚡ @group (Nombre de grupo)*\n*⚡ @desc (Description de grupo)*\n\n*RECUERDE QUE LOS "@" SON OPCIONALES*`, m);
+*❒ Variables disponibles:*
+𖣣ֶㅤ֯⌗ ✤ ⬭ @user    
+> → Mención del usuario que ingresa
+
+𖣣ֶㅤ֯⌗ ✤ ⬭ @group   
+> → Nombre del grupo
+
+𖣣ֶㅤ֯⌗ ✤ ⬭ @desc    
+> → Descripción del grupo
+
+𖣣ֶㅤ֯⌗ ✤ ⬭ @members 
+> → Número de miembros actuales
+
+𖣣ֶㅤ֯⌗ ✤ ⬭ @time    
+> → Fecha y hora
+
+✿ Si ya tienes un mensaje configurado y quieres borrarlo usa: *${usedPrefix + command} clear*`);
     }
+    if (args[0] === 'clear') {
+      if (!chat.sWelcome || chat.sWelcome.trim() === '') {
+        return msg.reply('✎ No tienes ningún mensaje de bienvenida definido.');
+      }
+      chat.sWelcome = '';
+      global.db.data.chats[chatId].sWelcome = '';
+      return msg.reply('✐ Mensaje de bienvenida eliminado.');
+    }
+    const texto = args.join(' ');
+    chat.sWelcome = texto;
+    global.db.data.chats[chatId].sWelcome = texto;
+    msg.reply(`ꕥ Has establecido el mensaje de bienvenida correctamente.`);
+  }
 };
-
-handler.help = ['setwelcome @user + texto'];
-handler.tags = ['group'];
-handler.command = ['setwelcome', 'bienvenida']; 
-handler.botAdmin = true;
-handler.admin = true;
-handler.group = true;
-
-export default handler;
